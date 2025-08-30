@@ -180,6 +180,7 @@ namespace osu.Game.Screens.Play.HUD
             {
                 displayedSpriteText = s;
                 displayedSpriteText.Spacing = new Vector2(-6);
+                displayedSpriteText.Colour = Colour4.FromHex("#4b3323");
                 updateFont(false);
             });
 
@@ -195,6 +196,7 @@ namespace osu.Game.Screens.Play.HUD
             {
                 s.Spacing = new Vector2(-2);
                 s.Font = OsuFont.Torus.With(weight: FontWeight.Regular, size: bar_height, fixedWidth: true);
+                s.Colour = Colour4.FromHex("#4b3323");
             });
         }
     }

@@ -76,7 +76,7 @@ namespace osu.Game.Tournament.Screens.Gameplay.Components
                         },
                         box = new Box
                         {
-                            Colour = Color4Extensions.FromHex("#FFE8AD"),
+                            Colour = Color4Extensions.FromHex("#fdd25d"),
                             RelativeSizeAxes = Axes.Both,
                         },
                     };
