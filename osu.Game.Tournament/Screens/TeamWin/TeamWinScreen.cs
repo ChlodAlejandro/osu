@@ -113,6 +113,7 @@ namespace osu.Game.Tournament.Screens.TeamWin
                             Text = "WINNER",
                             Font = OsuFont.Torus.With(size: 100, weight: FontWeight.Bold),
                             Margin = new MarginPadding { Bottom = 50 },
+                            Colour = TournamentGame.TEXT_COLOUR
                         },
                         new DrawableTeamWithPlayers(match.Winner, match.WinnerColour)
                     }
