@@ -60,13 +60,13 @@ namespace osu.Game.Overlays.Chat
         [Resolved]
         private OverlayColourProvider? colourProvider { get; set; }
 
-        private OsuSpriteText drawableTimestamp = null!;
+        protected OsuSpriteText drawableTimestamp = null!;
 
         private DrawableChatUsername drawableUsername = null!;
 
         private LinkFlowContainer drawableContentFlow = null!;
 
-        private readonly Bindable<bool> prefer24HourTime = new Bindable<bool>();
+        protected readonly Bindable<bool> prefer24HourTime = new Bindable<bool>();
 
         private Container? highlight;
 
@@ -120,6 +120,8 @@ namespace osu.Game.Overlays.Chat
         /// </remarks>
         public Color4 UsernameColour { get; init; }
 
+        protected int TimestampWidth = 45;
+
         public ChatLine(Message message)
         {
             Message = message;
@@ -169,7 +171,7 @@ namespace osu.Game.Overlays.Chat
                     RowDimensions = new[] { new Dimension(GridSizeMode.AutoSize) },
                     ColumnDimensions = new[]
                     {
-                        new Dimension(GridSizeMode.Absolute, 45),
+                        new Dimension(GridSizeMode.Absolute, TimestampWidth),
                         new Dimension(GridSizeMode.Absolute, Spacing + UsernameWidth + Spacing),
                         new Dimension(),
                     },
@@ -298,7 +300,7 @@ namespace osu.Game.Overlays.Chat
             drawableContentFlow.AddLinks(message.DisplayContent, message.Links);
         }
 
-        private void updateTimestamp()
+        protected virtual void updateTimestamp()
         {
             drawableTimestamp.Text = message.Timestamp.LocalDateTime.ToLocalisableString(prefer24HourTime.Value ? @"HH:mm" : @"hh:mm tt");
         }

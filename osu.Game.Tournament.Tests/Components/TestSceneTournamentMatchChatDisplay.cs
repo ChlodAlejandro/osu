@@ -46,6 +46,12 @@ namespace osu.Game.Tournament.Tests.Components
             OnlineID = 5,
         };
 
+        private readonly TournamentUser longNameUser = new TournamentUser
+        {
+            Username = "chlodaidanlname",
+            OnlineID = 6,
+        };
+
         [Cached]
         private LadderInfo ladderInfo = new LadderInfo();
 
@@ -157,6 +163,34 @@ namespace osu.Game.Tournament.Tests.Components
             {
                 Sender = redUser.ToAPIUser(),
                 Content = "!mp wangs"
+            }));
+
+            AddStep("timestamp should change", () =>
+            {
+                testChannel.AddNewMessages(new Message(nextMessageId())
+                {
+                    Sender = longNameUser.ToAPIUser(),
+                    Content = "Message 1",
+                    Timestamp = System.DateTimeOffset.FromUnixTimeSeconds(1)
+                });
+                testChannel.AddNewMessages(new Message(nextMessageId())
+                {
+                    Sender = longNameUser.ToAPIUser(),
+                    Content = "Message 2",
+                    Timestamp = System.DateTimeOffset.FromUnixTimeSeconds(1)
+                });
+                testChannel.AddNewMessages(new Message(nextMessageId())
+                {
+                    Sender = longNameUser.ToAPIUser(),
+                    Content = "Break",
+                    Timestamp = System.DateTimeOffset.FromUnixTimeSeconds(2)
+                });
+            });
+
+            AddStep("message from long name user", () => testChannel.AddNewMessages(new Message(nextMessageId())
+            {
+                Sender = longNameUser.ToAPIUser(),
+                Content = "I have a very long name!"
             }));
         }
 

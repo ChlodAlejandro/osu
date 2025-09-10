@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
+using osu.Framework.Extensions.LocalisationExtensions;
 using osu.Framework.Graphics;
 using osu.Game.Online.API;
 using osu.Game.Online.Chat;
@@ -90,13 +91,34 @@ namespace osu.Game.Tournament.Components
             {
                 ScrollbarVisible = false;
             }
+
+            protected override void Update()
+            {
+                base.Update();
+
+                long? lastSeconds = null;
+
+                for (int i = 0; i < ChatLineFlow.Count; i++)
+                {
+                    if (ChatLineFlow[i] is ChatLine chatline)
+                    {
+                        long seconds = chatline.Message.Timestamp.ToUnixTimeSeconds();
+
+                        chatline.AlternatingBackground = i % 2 == 0;
+                        chatline.RequiresTimestamp = seconds != lastSeconds;
+                        lastSeconds = seconds;
+                    }
+                }
+            }
         }
 
         protected partial class MatchMessage : StandAloneMessage
         {
+
             public MatchMessage(Message message, LadderInfo info)
                 : base(message)
             {
+                TimestampWidth = 58;
                 if (info.CurrentMatch.Value is TournamentMatch match)
                 {
                     if (match.Team1.Value?.Players.Any(u => u.OnlineID == Message.Sender.OnlineID) == true)
@@ -104,6 +126,12 @@ namespace osu.Game.Tournament.Components
                     else if (match.Team2.Value?.Players.Any(u => u.OnlineID == Message.Sender.OnlineID) == true)
                         UsernameColour = TournamentGame.COLOUR_BLUE;
                 }
+            }
+            protected override void updateTimestamp()
+            {
+                drawableTimestamp.Text = Message.Timestamp.LocalDateTime
+                    .ToUniversalTime()
+                    .ToLocalisableString(prefer24HourTime.Value ? @"HH:mm:ss" : @"hh:mm:ss tt");
             }
         }
     }
